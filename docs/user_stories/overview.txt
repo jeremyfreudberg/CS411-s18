@@ -1,0 +1,13 @@
+(1) As a user, I would like a secure login and app for the safety of my data
+(2) As a user, I would like the application’s decisions to be based on my
+    local weather
+(3) As a user, I would like to be presented with recommended recipes
+(4) As a user, I would like to save recommended recipes
+(5) As a user, I would like to indicate that none of the recipes please and me
+    and would prefer other options
+(6) As a user, I would like to return to my saved list of recipes in an easy
+    fashion
+(7) As a user, I would like to be recommended accurate restaurant delivery
+    details
+(8) As a user, I would like to securely log out of the application when I
+    finish using it

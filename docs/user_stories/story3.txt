@@ -1,0 +1,7 @@
+As an authenticated user, and after having performed the flow mentioned in
+Story 2, I will be presented with recommended recipes. If all was successful I
+will be able to view this list of recipes, which contains hyperlinks to the
+full recipes, as well as their names. The recipes will be appropriate for the
+weather in my zip code. If all was not successful (not user error, but an error
+in the application), then I will encounter an error but (most likely) be able
+to have the application retry.

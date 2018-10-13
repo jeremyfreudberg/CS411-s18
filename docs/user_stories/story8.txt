@@ -1,0 +1,6 @@
+As an authenticated user, I will be able to, from any stage in the application,
+indicate my desire to log out of the application. This will most likely be a
+persistent button on all screens which the application presents. If successful,
+my application session will be ended. If not successful, my application session
+will continue (possibly in an inconsistent state), but I will (most likely) be
+able to attempt to log out again.

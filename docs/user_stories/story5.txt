@@ -1,0 +1,8 @@
+As an authenticated user, and after having performed the flow mentioned in
+Stories 2 and 3, I will be on the recipe-saving screen, and will have the
+additional ability to reject all presented recipes. I will express this
+interest by clicking an appropriately-labeled button. If all was successful the
+application will advance me to the next screen (to be described in Story 7),
+and otherwise, if the all was not successful (not user error, but an error in
+the application), then I will encounter an error but (most likely) be able to
+have the application retry.
