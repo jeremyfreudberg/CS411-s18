@@ -11,7 +11,7 @@
     {
         "Username_2" : {
             "Fav_Recipes" : [ "url_for_apple_pie", "url_for_cupcake"],
-            "Weather" : "84",
+            "Temperature" : "84",
             "Conditions" : "Sunny",
             "Zipcode" : "02215",
             "Fav_Restaurants" : ["Chipotle", "NudPub"]
