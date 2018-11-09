@@ -2,14 +2,14 @@ import requests
 import boto3
 import sys
 import json
-#from weatherfood import application
+from weatherfood import application
 
-'''
+
 app = application.app
 API_KEY = app.config['API_KEY']
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?zip={0},us&appid={1}"
 RESULT_BASE = "{0}, and {1} degrees Fahrenheit"
-'''
+
 
 def _kelvin_to_fahrenheit(k):
     f = (k * 1.8) - 459.67
