@@ -2,3 +2,4 @@ Flask
 Flask-Bootstrap
 requests
 boto3
+Flask-OAuth2-Login

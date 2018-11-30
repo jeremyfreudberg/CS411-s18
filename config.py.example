@@ -1,1 +1,6 @@
 API_KEY = 'replaceme'
+
+GOOGLE_LOGIN_CLIENT_ID = 'replaceme'
+GOOGLE_LOGIN_CLIENT_SECRET = 'replaceme'
+SECRET_KEY = 'any_string'
+GOOGLE_LOGIN_REDIRECT_SCHEME = 'http'
