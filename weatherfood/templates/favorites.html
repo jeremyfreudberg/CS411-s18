@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+Favorites: 
+<br /><br />
+
+{% for item in favorites %}
+    {% for key, value in item.items() %}
+        <b>{{ key }}</b>
+        <b>{{ value }}</b>
+        
+        <form action="/del_fav" method=get> 
+            <button class="btn-sm btn-danger" type="submit" name="delete" value="{{ key }}">Delete</button>
+        </form>
+        
+        <br /><br />
+    {% endfor %}
+{% endfor %}
+<br /><br />
+
+<a href="/weather" class="btn btn-warning">Return to Weather</a>
+
+{% endblock %}

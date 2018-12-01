@@ -4,6 +4,12 @@
 
 The weather is: <b>{{ weather }}</b>
 <br /><br />
+<form action="/customrecipe" method=post>
+    <label for="recipe">Enter a Recipe: </label>
+    <input id="recipe" name="recipe" type="text" autocomplete=off value="" />
+    <input id="submit" name="submit" type="submit" value="Submit" class="btn-sm btn-primary" />
+</form>
 <a href="/" class="btn btn-warning">Go again</a>
+<a href="/viewfavorites" class="btn btn-info">View Favorite Recipes</a>
 
 {% endblock %}

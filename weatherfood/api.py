@@ -25,6 +25,88 @@ def get_weather_pretty(zipcode):
     else:
         return RESULT_BASE.format(conditions, temperature)
 
+#http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3 		
+
+#Function that takes in ingredients from argv and creates a Recipe Puppy API Query
+#returns a dictionary with key = recipe title, value = recipe http address
+def Recipe_from_ingredients():
+	ingredients = []
+	http_address = 'http://www.recipepuppy.com/api/?i='
+	dicto = {}
+
+	for value in sys.argv[1:]:
+		ingredients.append(value)
+
+	for value in ingredients:
+		if value != (ingredients[len(ingredients) - 1]):
+			http_address += value + ','
+		else:
+			http_address += value
+
+	content = requests.get(http_address)
+	#print(http_address)	
+	#print(content.json())
+
+	for result in content.json()['results']:
+		
+		for char in json.dumps(result['title']):
+			temp = ''
+			try:
+				if( (int(char) > 64 and int(char) < 91) or (int(char) > 96 and int(char) < 123) or (int(char) == 32) or (int(char) == 39) or (int(char) == 44) or (int(char) == 45) ):
+					temp += char
+			except ValueError:
+				pass
+			
+		
+		#dicto.update( {temp : result['href']} )
+		dicto.update( {json.dumps(result['title']) : json.dumps(result['href'])} )
+
+	#return content.json()
+	print(dicto)
+	return dicto
+
+#Function that takes in a single value search query from argv and creates a Recipe Puppy API Query
+#returns a dictionary with key = recipe title, value = recipe http address
+def Recipe_from_query():
+	http_address = 'http://www.recipepuppy.com/api/?q='
+	dicto = {}
+
+	content = requests.get(http_address + sys.argv[1])
+
+	for result in content.json()['results']:
+		'''
+		for char in json.dumps(result['title']):
+			temp = ''
+			try:
+				if( (int(char) > 64 and int(char) < 91) or (int(char) > 96 and int(char) < 123) or (int(char) == 32) or (int(char) == 39) or (int(char) == 44) or (int(char) == 45) ):
+					temp += char
+			except ValueError:
+				pass
+		'''	
+		
+		#dicto.update( {temp : result['href']} )
+		dicto.update( {json.dumps(result['title']) : json.dumps(result['href'])} )
+
+	#return content.json()
+	print(dicto)
+	return dicto
+
+#Function that takes in a single value search query from input and creates a Recipe Puppy API Query
+#returns a dictionary with key = recipe title, value = recipe http address
+def Recipe_from_input(recipe):
+	http_address = 'http://www.recipepuppy.com/api/?q='
+	dicto = {}
+
+	content = requests.get(http_address + recipe)
+
+	for result in content.json()['results']:		
+		#dicto.update( {temp : result['href']} )
+		dicto.update( {json.dumps(result['title']) : json.dumps(result['href'])} )
+
+	#return content.json()
+	print(dicto)
+	return dicto
+
 #Function that creates a new user and puts it in our DynamoDB database
 def create_user(UserName, Zipcode):
 	dynamodb = boto3.resource('dynamodb')
@@ -34,7 +116,7 @@ def create_user(UserName, Zipcode):
 			'Username': UserName,
 			'Zipcode': Zipcode,
 			'Weather': None,
-            'Fav_Recipes': None
+            'Fav_Recipes': []
 		}
 	)
 
@@ -65,4 +147,53 @@ def update_zipcode(UserName, Zipcode):
 		ExpressionAttributeValues={
 			':Zipcode': Zipcode
 		}
+	)
+
+#Function that updates a user's weather
+def update_weather(UserName, Weather):
+	dynamodb = boto3.resource('dynamodb')
+	table = dynamodb.Table('CS411')
+	table.update_item(
+		Key={
+			'Username': UserName
+		},
+		UpdateExpression='SET Weather = :Weather',
+		ExpressionAttributeValues={
+			':Weather': Weather
+		}
+	)
+
+#Function that updates a user's favorite recipes
+def update_recipe(UserName, RecipeKey, RecipeValue):
+	dynamodb = boto3.resource('dynamodb')
+	table = dynamodb.Table('CS411')
+	table.update_item(
+		Key={
+			'Username': UserName
+		},
+		UpdateExpression='SET Fav_Recipes = list_append(Fav_Recipes, :Fav_Recipes)',
+		ExpressionAttributeValues={
+			':Fav_Recipes': [{str(RecipeKey) : str(RecipeValue)}]
+		},
+		ReturnValues = "UPDATED_NEW"
+	)
+
+#Function that deletes a user's favorite recipe
+def delete_favorite(UserName, RecipeKey):
+	count = 0
+	index = 0
+
+	for key in retreive_user(UserName)['Fav_Recipes']:
+		if key == RecipeKey:
+			index = count
+		count+=1
+
+	dynamodb = boto3.resource('dynamodb')
+	table = dynamodb.Table('CS411')
+	table.update_item(
+		Key={
+			'Username': UserName
+		},
+		UpdateExpression='REMOVE Fav_Recipes[{}]'.format(index),
+		ReturnValues = "UPDATED_NEW"
 	)

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+Your custom recipe results are: 
+<br /><br />
+
+{% for key, value in recipe.items() %}
+    <b>{{ key }}</b>
+    <b>{{ value }}</b>
+    
+    <form action="/fav_recipe" method=get> 
+        <input type="hidden" name="key"  value="{{ key }}">
+        <button class="btn-sm btn-primary" type="submit" name="favorite" value="{{ value }}">Favorite</button>
+    </form>
+    
+    <br /><br />
+{% endfor %}
+
+<br /><br />
+<a href="/weather" class="btn btn-warning">Return to Weather</a>
+
+{% endblock %}
