@@ -1,6 +1,9 @@
 # SECRETS
 config.py
 
+# Other stuff
+username.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
