@@ -1,5 +1,6 @@
 import requests
 import boto3
+import botocore
 import sys
 import json
 from weatherfood import application
@@ -108,17 +109,24 @@ def Recipe_from_input(recipe):
 	return dicto
 
 #Function that creates a new user and puts it in our DynamoDB database
-def create_user(UserName, Zipcode):
+def create_user(UserName):
 	dynamodb = boto3.resource('dynamodb')
 	table = dynamodb.Table('CS411')
-	table.put_item(
-		Item={
-			'Username': UserName,
-			'Zipcode': Zipcode,
-			'Weather': None,
-            'Fav_Recipes': []
-		}
-	)
+	try:
+		table.put_item(
+			Item={
+				'Username': UserName,
+				'Zipcode': 0,
+				'Weather': None,
+				'Fav_Recipes': []
+			},
+			ConditionExpression='attribute_not_exists(Username)'
+		)
+	except botocore.exceptions.ClientError as e:
+		# Ignore the ConditionalCheckFailedException, bubble up
+		# other exceptions.
+		if e.response['Error']['Code'] != 'ConditionalCheckFailedException':
+			raise
 
 #Function that retrieves user through their user name
 def retreive_user(UserName):
