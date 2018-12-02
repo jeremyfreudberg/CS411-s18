@@ -11,6 +11,16 @@ API_KEY = app.config['API_KEY']
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?zip={0},us&appid={1}"
 RESULT_BASE = "{0}, and {1} degrees Fahrenheit"
 
+USE_LOCAL_DYNAMO = bool(app.config['USE_LOCAL_DYNAMO'])
+def _load_dynamo_resource():
+    if not USE_LOCAL_DYNAMO:
+        return boto3.resource('dynamodb')
+    else:
+        return boto3.resource('dynamodb',
+                              endpoint_url='http://localhost:8000',
+                              region_name='dummy',
+                              aws_access_key_id='dummy',
+                              aws_secret_access_key='dummy')
 
 def _kelvin_to_fahrenheit(k):
     f = (k * 1.8) - 459.67
@@ -110,7 +120,7 @@ def Recipe_from_input(recipe):
 
 #Function that creates a new user and puts it in our DynamoDB database
 def create_user(UserName):
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	try:
 		table.put_item(
@@ -130,7 +140,7 @@ def create_user(UserName):
 
 #Function that retrieves user through their user name
 def retreive_user(UserName):
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	try:
 		response = table.get_item(
@@ -145,7 +155,7 @@ def retreive_user(UserName):
 
 #Function that updates a user's zipcode
 def update_zipcode(UserName, Zipcode):
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	table.update_item(
 		Key={
@@ -159,7 +169,7 @@ def update_zipcode(UserName, Zipcode):
 
 #Function that updates a user's weather
 def update_weather(UserName, Weather):
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	table.update_item(
 		Key={
@@ -173,7 +183,7 @@ def update_weather(UserName, Weather):
 
 #Function that updates a user's favorite recipes
 def update_recipe(UserName, RecipeKey, RecipeValue):
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	table.update_item(
 		Key={
@@ -196,7 +206,7 @@ def delete_favorite(UserName, RecipeKey):
 			index = count
 		count+=1
 
-	dynamodb = boto3.resource('dynamodb')
+	dynamodb = _load_dynamo_resource()
 	table = dynamodb.Table('CS411')
 	table.update_item(
 		Key={
