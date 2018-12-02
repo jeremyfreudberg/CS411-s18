@@ -13,7 +13,8 @@ def index():
     msg = None
     if flask.request.args.get('error', None):
         msg = "<font color=red>Can't fetch weather. Was that a valid zipcode?</font><br />"
-    return flask.render_template('index.html', msg=msg)
+    zipcode = api.retreive_user(username)["Zipcode"]
+    return flask.render_template('index.html', msg=msg, zipcode=zipcode)
 
 @app.route('/weather', methods=['GET','POST'])
 def weather():
@@ -47,7 +48,7 @@ def login_success(token, profile):
     username = result.get_json()["profile"]["email"]
     api.create_user(username)
     flask.session['username'] = username
-    return flask.render_template('index.html')
+    return flask.redirect('/home')
 
 @google.login_failure
 def login_failure(e):
