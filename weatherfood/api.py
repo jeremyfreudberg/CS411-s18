@@ -46,7 +46,7 @@ def Recipe_from_input(recipe):
 
 	for result in content.json()['results']:		
 		#dicto.update( {temp : result['href']} )
-		dicto.update( {json.dumps(result['title']) : json.dumps(result['href'])} )
+		dicto.update( {result['title'] :result['href']} )
 
 	#return content.json()
 	#print(dicto)

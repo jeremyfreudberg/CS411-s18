@@ -4,7 +4,6 @@ from weatherfood import application
 
 app = application.app
 google = application.google_login
-temp = {}
 
 @app.route('/home', methods=['GET'])
 def index():
@@ -66,9 +65,19 @@ def show_recipe():
         return flask.redirect('/')
     current_recipe = api.Recipe_from_input(
         flask.request.form.get("recipe"))
-    temp.clear()
-    temp.update(current_recipe)
     return flask.render_template('custom_recipe.html', recipe=current_recipe)
+
+@app.route('/process_favorites', methods=['POST'])
+def add_favorite_recipes():
+    username = flask.session.get('username', None)
+    if username is None:
+        return flask.redirect('/')
+    data = flask.request.form.to_dict()
+    data.pop('submit')
+    if data:
+        for name, url in data.items():
+            api.update_recipe(username, name, url)
+    return flask.redirect('/viewfavorites')
 
 @app.route('/viewfavorites', methods=['GET'])
 def show_favorites():
@@ -84,11 +93,3 @@ def delete_favorite():
         return flask.redirect('/')
     api.delete_favorite(username, flask.request.values.get('delete'))
     return flask.redirect('/viewfavorites')
-
-@app.route('/fav_recipe', methods=['POST'])
-def favorite_recipe():
-    username = flask.session.get('username', None)
-    if username is None:
-        return flask.redirect('/')
-    api.update_recipe(username, flask.request.values.get('key'), flask.request.values.get('favorite') )
-    return flask.render_template('custom_recipe.html', recipe=temp)
