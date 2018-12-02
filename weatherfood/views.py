@@ -8,6 +8,9 @@ temp = {}
 
 @app.route('/home', methods=['GET'])
 def index():
+    username = flask.session.get('username', None)
+    if username is None:
+        return flask.redirect('/')
     return flask.render_template('index.html')
 
 @app.route('/weather', methods=['GET','POST'])
@@ -50,6 +53,9 @@ def logout():
 
 @app.route('/customrecipe', methods=['POST'])
 def show_recipe():
+    username = flask.session.get('username', None)
+    if username is None:
+        return flask.redirect('/')
     current_recipe = api.Recipe_from_input(
         flask.request.form.get("recipe"))
     temp.clear()
