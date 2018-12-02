@@ -10,7 +10,7 @@ Favorites:
         <b>{{ key }}</b>
         <b>{{ value }}</b>
         
-        <form action="/del_fav" method=get> 
+        <form action="/del_fav" method=post>
             <button class="btn-sm btn-danger" type="submit" name="delete" value="{{ key }}">Delete</button>
         </form>
         

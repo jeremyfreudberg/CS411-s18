@@ -9,7 +9,7 @@ Your custom recipe results are:
     <b>{{ key }}</b>
     <b>{{ value }}</b>
     
-    <form action="/fav_recipe" method=get> 
+    <form action="/fav_recipe" method=post>
         <input type="hidden" name="key"  value="{{ key }}">
         <button class="btn-sm btn-primary" type="submit" name="favorite" value="{{ value }}">Favorite</button>
     </form>

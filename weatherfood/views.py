@@ -77,7 +77,7 @@ def show_favorites():
         return flask.redirect('/')
     return flask.render_template( 'favorites.html', favorites = api.retreive_user(username)["Fav_Recipes"] )
 
-@app.route("/del_fav", methods=["GET"])
+@app.route("/del_fav", methods=["POST"])
 def delete_favorite():
     username = flask.session.get('username', None)
     if username is None:
@@ -85,7 +85,7 @@ def delete_favorite():
     api.delete_favorite(username, flask.request.values.get('delete'))
     return flask.render_template( 'favorites.html', favorites = api.retreive_user(username)["Fav_Recipes"] )
 
-@app.route('/fav_recipe', methods=['GET'])
+@app.route('/fav_recipe', methods=['POST'])
 def favorite_recipe():
     username = flask.session.get('username', None)
     if username is None:
