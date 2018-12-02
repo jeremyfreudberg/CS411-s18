@@ -83,7 +83,7 @@ def delete_favorite():
     if username is None:
         return flask.redirect('/')
     api.delete_favorite(username, flask.request.values.get('delete'))
-    return flask.render_template( 'favorites.html', favorites = api.retreive_user(username)["Fav_Recipes"] )
+    return flask.redirect('/viewfavorites')
 
 @app.route('/fav_recipe', methods=['POST'])
 def favorite_recipe():
