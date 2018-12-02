@@ -6,3 +6,5 @@ SECRET_KEY = 'any_string'
 GOOGLE_LOGIN_REDIRECT_SCHEME = 'http'
 
 USE_LOCAL_DYNAMO=False
+
+YELP_TOKEN = 'replaceme'

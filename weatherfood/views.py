@@ -1,4 +1,5 @@
 import flask
+import requests
 from weatherfood import api
 from weatherfood import application
 
@@ -94,3 +95,22 @@ def delete_favorite():
         return flask.redirect('/')
     api.delete_favorite(username, flask.request.values.get('delete'))
     return flask.redirect('/viewfavorites')
+
+@app.route('/yelp', methods=['POST'])
+def yelpform():
+    username = flask.session.get('username', None)
+    if username is None:
+        return flask.redirect('/')
+    URL = "https://api.yelp.com/v3/businesses/search"
+    PARAMS={
+	'term': 'restaurants',
+        'location': api.retreive_user(username)["Zipcode"],
+	'radius':2000
+    }
+    HEADERS={
+	'Authorization': app.config['YELP_TOKEN']
+    }
+    r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
+    data = r.json()
+    data = sorted(data['businesses'], key=lambda e: 'delivery' in e['transactions'], reverse=True)
+    return flask.render_template('yelp.html', data=data)
