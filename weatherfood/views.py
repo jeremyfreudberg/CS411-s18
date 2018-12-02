@@ -11,7 +11,10 @@ def index():
     username = flask.session.get('username', None)
     if username is None:
         return flask.redirect('/')
-    return flask.render_template('index.html')
+    msg = None
+    if flask.request.args.get('error', None):
+        msg = "<font color=red>Can't fetch weather. Was that a valid zipcode?</font><br />"
+    return flask.render_template('index.html', msg=msg)
 
 @app.route('/weather', methods=['GET','POST'])
 def weather():
@@ -19,16 +22,21 @@ def weather():
     if username is None:
         return flask.redirect('/')
 
-    if( api.get_weather_pretty(flask.request.form.get("zipcode")) != "Unavailable" ):
-        current_weather = api.get_weather_pretty(
-            flask.request.form.get("zipcode"))
-    else:
+    zipcode = flask.request.form.get('zipcode')
+    current_weather = api.get_weather_pretty(zipcode)
+    if current_weather == "Unavailable":
         current_weather = api.retreive_user(username)["Weather"]
+        # Attempt to use the cached zipcode:
+        zipcode = api.retreive_user(username)["Zipcode"]
+    else:
+        api.update_zipcode(username, zipcode)
+        api.update_weather(username, current_weather)
 
-    api.update_zipcode(username, flask.request.form.get("zipcode"))
-    api.update_weather(username, current_weather)
-    
-    return flask.render_template('result.html', weather=current_weather)
+    if zipcode:
+        return flask.render_template('result.html', weather=current_weather, zipcode=zipcode)
+    else:
+        # The user entered an invalid ZIP, and never previously entered a valid ZIP during a prior session
+        return flask.redirect('/home?error=1')
 
 @app.route('/', methods=['GET'])
 def login():
