@@ -49,7 +49,7 @@ def Recipe_from_input(recipe):
 		dicto.update( {json.dumps(result['title']) : json.dumps(result['href'])} )
 
 	#return content.json()
-	print(dicto)
+	#print(dicto)
 	return dicto
 
 #Function that creates a new user and puts it in our DynamoDB database
