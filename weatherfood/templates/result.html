@@ -4,11 +4,41 @@
 
 The weather in {{ zipcode }} is: <b>{{ weather }}</b>
 <br /><br />
-<form action="/customrecipe" method=post>
-    <label for="recipe">Enter a Recipe: </label>
+
+<script type="text/javascript">
+function newPopup(url) {
+    popupWindow = window.open(url,'popUpWindow','height=700,width=1000,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=no')
+}
+</script>
+
+<b><font size=6.5>Check off your favorite recipes, if any:</font></b>
+<br />
+
+<form action="/process_favorites" method=post>
+    {% for key, value in recipe.items() %}
+        <a href="JavaScript:newPopup('{{value}}')"><b>{{ key }}</b></a>
+        <input type="checkbox" name="{{key}}"  value="{{value}}"><br />
+    {% endfor %}
+    <br />
+    <input id="submit" name="submit" type="submit" value="Add to favorites list" class="btn-lg btn-primary" />
+</form>
+
+<br /><br />
+
+<form action="/weather" method=post>
+    <label for="recipe">Enter a Custom Recipe: </label>
     <input id="recipe" name="recipe" type="text" autocomplete=off value="" />
     <input id="submit" name="submit" type="submit" value="Submit" class="btn-sm btn-primary" />
 </form>
+
+<br /><br />
+
+<form action="/yelp" method=post>
+<input id="submit" name="submit" type="submit" value="I hate these suggestions!" class="btn-lg btn-info" />
+</form>
+
+<br /><br />
+
 <a href="/home" class="btn btn-warning">Go again</a>
 <a href="/viewfavorites" class="btn btn-info">View Favorite Recipes</a>
 

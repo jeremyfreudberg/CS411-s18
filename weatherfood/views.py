@@ -24,17 +24,34 @@ def weather():
         return flask.redirect('/')
 
     zipcode = flask.request.form.get('zipcode')
+    current_recipe = api.Recipe_from_input(flask.request.form.get("recipe"))
     current_weather = api.get_weather_pretty(zipcode)
+    temperature = 0
     if current_weather == "Unavailable":
         current_weather = api.retreive_user(username)["Weather"]
+
+        # Grabbing the temperature from the current_weather string
+        for val in current_weather.split(): 
+            if val.isdigit():
+                temperature = int(val) 
+        if current_recipe == None :
+            current_recipe = api.Recipe_from_input(api.grab_temp_recipe(temperature))
+
         # Attempt to use the cached zipcode:
         zipcode = api.retreive_user(username)["Zipcode"]
     else:
         api.update_zipcode(username, zipcode)
         api.update_weather(username, current_weather)
+        
+        # Grabbing the temperature from the current_weather string
+        for val in current_weather.split(): 
+            if val.isdigit():
+                temperature = int(val) 
+        if current_recipe == None :
+            current_recipe = api.Recipe_from_input(api.grab_temp_recipe(temperature))
 
     if zipcode:
-        return flask.render_template('result.html', weather=current_weather, zipcode=zipcode)
+        return flask.render_template('result.html', weather=current_weather, zipcode=zipcode, recipe=current_recipe)
     else:
         # The user entered an invalid ZIP, and never previously entered a valid ZIP during a prior session
         return flask.redirect('/home?error=1')
@@ -59,15 +76,6 @@ def login_failure(e):
 def logout():
     flask.session['username'] = None
     return flask.redirect('/')
-
-@app.route('/customrecipe', methods=['POST'])
-def show_recipe():
-    username = flask.session.get('username', None)
-    if username is None:
-        return flask.redirect('/')
-    current_recipe = api.Recipe_from_input(
-        flask.request.form.get("recipe"))
-    return flask.render_template('custom_recipe.html', recipe=current_recipe)
 
 @app.route('/process_favorites', methods=['POST'])
 def add_favorite_recipes():

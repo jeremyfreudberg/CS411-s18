@@ -3,6 +3,7 @@ import boto3
 import botocore
 import sys
 import json
+import random
 from weatherfood import application
 
 
@@ -42,7 +43,10 @@ def Recipe_from_input(recipe):
 	http_address = 'http://www.recipepuppy.com/api/?q='
 	dicto = {}
 
-	content = requests.get(http_address + recipe)
+	try:
+		content = requests.get(http_address + recipe)
+	except TypeError:
+		return None
 
 	for result in content.json()['results']:		
 		#dicto.update( {temp : result['href']} )
@@ -84,7 +88,7 @@ def retreive_user(UserName):
 		)
 		item = response['Item']
 		return item
-	except KeyError as e:
+	except KeyError:
 		return None
 
 #Function that updates a user's zipcode
@@ -149,3 +153,34 @@ def delete_favorite(UserName, RecipeKey):
 		UpdateExpression='REMOVE Fav_Recipes[{}]'.format(index),
 		ReturnValues = "UPDATED_NEW"
 	)
+
+#Function that retrieves a random recipe look-up name from a table based off of temperature
+def grab_temp_recipe(Temperature):
+	key =""
+	if Temperature <= 50:
+		key = "low"
+	elif Temperature >= 75:
+		key = "high"
+	else:
+		key = "medium"
+
+	dynamodb = _load_dynamo_resource()
+	table = dynamodb.Table('WeatherRecipes')
+	try:
+		response = table.get_item(
+			Key={
+				'Temperature': key
+			}
+		)
+		item = response['Item']
+		#return item
+	except KeyError:
+		return None
+	
+	recipes = []
+	recipes = item["Recipes"]
+	index = random.randint(0,len(recipes))
+	print(index)
+	print("\n")
+
+	return recipes[index]
