@@ -16,4 +16,86 @@ dynamo.create_table(TableName='WeatherRecipes',
                     AttributeDefinitions=[{'AttributeName': 'Temperature', 'AttributeType': 'S'}],
                     ProvisionedThroughput={'ReadCapacityUnits': 10, 'WriteCapacityUnits': 10})
 
-# TODO: add data to WeatherRecipes table
+COLD_TEMP_RECIPES = ['lasagna',
+                     'roast chicken',
+                     'hot soup',
+                     'dumplings',
+                     'spaghetti',
+                     'fried chicken',
+                     'goulash',
+                     'cajun pork',
+                     'potatoes',
+                     'casserole',
+                     'bread pudding',
+                     'meatballs',
+                     'mac and cheese',
+                     'beef roast',
+                     'pork chops',
+                     'mashed potatoes',
+                     'apple cake',
+                     'pork roast',
+                     'pot roast',
+                     'gingerbread cake',
+                     'lamb stew',
+                     'skillet',
+                     'minestrone']
+
+MEDIUM_TEMP_RECIPES = ['butternut squash',
+                       'lemon chicken',
+                       'enchiladas',
+                       'meat sauce',
+                       'chili chicken',
+                       'roast beef',
+                       'chili',
+                       'alfredo',
+                       'penne',
+                       'sausage soup',
+                       'cottage pie',
+                       'chicken and biscuits',
+                       'pea soup',
+                       'chicken with potatoes',
+                       'mexican lasagna',
+                       'goat cheese',
+                       'pot pie',
+                       'meatloaf',
+                       'salmon',
+                       'rice',
+                       'beans',
+                       'quesadillas',
+                       'burrito']
+
+HIGH_TEMP_RECIPES = ['caprese salad',
+                     'kale salad',
+                     'spring rolls',
+                     'pad thai',
+                     'poke bowl',
+                     'couscous salad',
+                     'pasta salad',
+                     'ice cream',
+                     'popsicle',
+                     'chickpea salad',
+                     'mochi',
+                     'quinoa salad',
+                     'blt',
+                     'sub',
+                     'burger',
+                     'hot dog',
+                     'chicken bites',
+                     'flatbread',
+                     'orzo',
+                     'lettuce',
+                     'shrimp',
+                     'yogurt',
+                     'gazpacho',
+                     'sorbet']
+
+t = dynamo.Table('WeatherRecipes')
+t.put_item(
+    Item={'Temperature': 'low', 'Recipes': COLD_TEMP_RECIPES}
+)
+t.put_item(
+    Item={'Temperature': 'medium', 'Recipes': MEDIUM_TEMP_RECIPES}
+)
+t.put_item(
+    Item={'Temperature': 'high', 'Recipes': HIGH_TEMP_RECIPES}
+)
