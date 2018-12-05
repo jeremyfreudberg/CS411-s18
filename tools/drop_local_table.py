@@ -8,3 +8,6 @@ dynamo = boto3.resource('dynamodb',
 
 t = dynamo.Table('CS411')
 t.delete()
+
+t = dynamo.Table('WeatherRecipes')
+t.delete()

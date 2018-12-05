@@ -10,3 +10,10 @@ dynamo.create_table(TableName='CS411',
                     KeySchema=[{'AttributeName': 'Username', 'KeyType': 'HASH'}],
                     AttributeDefinitions=[{'AttributeName': 'Username', 'AttributeType': 'S'}],
                     ProvisionedThroughput={'ReadCapacityUnits': 10, 'WriteCapacityUnits': 10})
+
+dynamo.create_table(TableName='WeatherRecipes',
+                    KeySchema=[{'AttributeName': 'Temperature', 'KeyType': 'HASH'}],
+                    AttributeDefinitions=[{'AttributeName': 'Temperature', 'AttributeType': 'S'}],
+                    ProvisionedThroughput={'ReadCapacityUnits': 10, 'WriteCapacityUnits': 10})
+
+# TODO: add data to WeatherRecipes table
