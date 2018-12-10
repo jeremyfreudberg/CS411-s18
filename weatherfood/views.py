@@ -1,5 +1,8 @@
 import flask
 import requests
+import datetime
+import dateutil
+import json
 from weatherfood import api
 from weatherfood import application
 
@@ -116,16 +119,29 @@ def yelpform():
     if username is None:
         return flask.redirect('/')
     zipcode = api.retreive_user(username)["Zipcode"]
-    URL = "https://api.yelp.com/v3/businesses/search"
-    PARAMS={
-	'term': 'restaurants',
-        'location': zipcode,
-	'radius':2000
-    }
-    HEADERS={
-	'Authorization': app.config['YELP_TOKEN']
-    }
-    r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
-    data = r.json()
+    cached_results = api.retrieve_yelp_data(zipcode)
+    now = datetime.datetime.now()
+    fetch_new = False
+    if cached_results is None:
+        fetch_new = True
+    else:
+        difference = now - dateutil.parser.parse(cached_results['Updated'])
+        if difference.seconds >= app.config['CACHE_EXPIRY_TIME']:
+            fetch_new = True
+    if fetch_new:
+        URL = "https://api.yelp.com/v3/businesses/search"
+        PARAMS={
+	    'term': 'restaurants',
+            'location': zipcode,
+            'radius':2000
+        }
+        HEADERS={
+            'Authorization': app.config['YELP_TOKEN']
+        }
+        r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
+        data = r.json()
+        api.save_yelp_data(zipcode, r.content, now.isoformat())
+    else:
+        data = json.loads(cached_results['YelpData'])
     data = sorted(data['businesses'], key=lambda e: 'delivery' in e['transactions'], reverse=True)
     return flask.render_template('yelp.html', data=data, zipcode=zipcode)
