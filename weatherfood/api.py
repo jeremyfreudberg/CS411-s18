@@ -180,7 +180,8 @@ def grab_temp_recipe(Temperature):
 	recipes = []
 	recipes = item["Recipes"]
 	index = random.randint(0,len(recipes))
-	print(index)
-	print("\n")
 
-	return recipes[index]
+	try:
+		return recipes[index]
+	except IndexError:
+		return recipes[0]
