@@ -87,6 +87,9 @@ def add_favorite_recipes():
         return flask.redirect('/')
     data = flask.request.form.to_dict()
     data.pop('submit')
+    existing_favorites = api.fetch_all_favorites(username)
+    for fav in existing_favorites:
+        data.pop(fav, None)
     if data:
         for name, url in data.items():
             api.update_recipe(username, name, url)

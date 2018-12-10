@@ -185,3 +185,13 @@ def grab_temp_recipe(Temperature):
 		return recipes[index]
 	except IndexError:
 		return recipes[0]
+
+def fetch_all_favorites(Username):
+    dynamo = _load_dynamo_resource()
+    t = dynamo.Table('CS411')
+    response = t.get_item(
+                   Key={
+                       'Username': Username
+                       }
+               )
+    return [recipe.keys()[0] for recipe in response['Item']['Fav_Recipes']]
