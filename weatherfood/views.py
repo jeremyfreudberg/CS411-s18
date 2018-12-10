@@ -1,5 +1,8 @@
 import flask
 import requests
+import datetime
+import dateutil
+import json
 from weatherfood import api
 from weatherfood import application
 
@@ -23,12 +26,21 @@ def weather():
     if username is None:
         return flask.redirect('/')
 
+    msg = None
+    if flask.request.args.get('error', None):
+        msg = "<font color=red>Can't save recipe to favorites. Please check a recipe you want to add it to your favorites.</font><br />"
+
     zipcode = flask.request.form.get('zipcode')
     current_recipe = api.Recipe_from_input(flask.request.form.get("recipe"))
     current_weather = api.get_weather_pretty(zipcode)
     temperature = 0
+
+    # Handling redirection and entry cases to this route ('/weather')
     if current_weather == "Unavailable":
         current_weather = api.retreive_user(username)["Weather"]
+
+        if current_weather is None:
+            return flask.redirect('/home?error=1')
 
         # Grabbing the temperature from the current_weather string
         for val in current_weather.split(): 
@@ -51,7 +63,7 @@ def weather():
             current_recipe = api.Recipe_from_input(api.grab_temp_recipe(temperature))
 
     if zipcode:
-        return flask.render_template('result.html', weather=current_weather, zipcode=zipcode, recipe=current_recipe)
+        return flask.render_template('result.html', msg=msg, weather=current_weather, zipcode=zipcode, recipe=current_recipe)
     else:
         # The user entered an invalid ZIP, and never previously entered a valid ZIP during a prior session
         return flask.redirect('/home?error=1')
@@ -109,16 +121,30 @@ def yelpform():
     username = flask.session.get('username', None)
     if username is None:
         return flask.redirect('/')
-    URL = "https://api.yelp.com/v3/businesses/search"
-    PARAMS={
-	'term': 'restaurants',
-        'location': api.retreive_user(username)["Zipcode"],
-	'radius':2000
-    }
-    HEADERS={
-	'Authorization': app.config['YELP_TOKEN']
-    }
-    r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
-    data = r.json()
+    zipcode = api.retreive_user(username)["Zipcode"]
+    cached_results = api.retrieve_yelp_data(zipcode)
+    now = datetime.datetime.now()
+    fetch_new = False
+    if cached_results is None:
+        fetch_new = True
+    else:
+        difference = now - dateutil.parser.parse(cached_results['Updated'])
+        if difference.seconds >= app.config['CACHE_EXPIRY_TIME']:
+            fetch_new = True
+    if fetch_new:
+        URL = "https://api.yelp.com/v3/businesses/search"
+        PARAMS={
+	    'term': 'restaurants',
+            'location': zipcode,
+            'radius':2000
+        }
+        HEADERS={
+            'Authorization': app.config['YELP_TOKEN']
+        }
+        r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
+        data = r.json()
+        api.save_yelp_data(zipcode, r.content, now.isoformat())
+    else:
+        data = json.loads(cached_results['YelpData'])
     data = sorted(data['businesses'], key=lambda e: 'delivery' in e['transactions'], reverse=True)
-    return flask.render_template('yelp.html', data=data)
+    return flask.render_template('yelp.html', data=data, zipcode=zipcode)
