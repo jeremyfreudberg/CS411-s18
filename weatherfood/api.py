@@ -195,3 +195,21 @@ def fetch_all_favorites(Username):
                        }
                )
     return [recipe.keys()[0] for recipe in response['Item']['Fav_Recipes']]
+
+def retrieve_yelp_data(zipcode):
+    dynamo = _load_dynamo_resource()
+    t = dynamo.Table('YelpCache')
+    response = t.get_item(Key={'Zipcode': zipcode})
+    try:
+        return response['Item']
+    except KeyError:
+        return None
+
+def save_yelp_data(Zipcode, YelpData, Updated):
+    dynamo = _load_dynamo_resource()
+    t = dynamo.Table('YelpCache')
+    t.put_item(
+        Item={'Zipcode': Zipcode,
+              'YelpData': YelpData,
+              'Updated': Updated}
+    )
