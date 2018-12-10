@@ -112,10 +112,11 @@ def yelpform():
     username = flask.session.get('username', None)
     if username is None:
         return flask.redirect('/')
+    zipcode = api.retreive_user(username)["Zipcode"]
     URL = "https://api.yelp.com/v3/businesses/search"
     PARAMS={
 	'term': 'restaurants',
-        'location': api.retreive_user(username)["Zipcode"],
+        'location': zipcode,
 	'radius':2000
     }
     HEADERS={
@@ -124,4 +125,4 @@ def yelpform():
     r = requests.get(url = URL, params = PARAMS , headers = HEADERS)
     data = r.json()
     data = sorted(data['businesses'], key=lambda e: 'delivery' in e['transactions'], reverse=True)
-    return flask.render_template('yelp.html', data=data)
+    return flask.render_template('yelp.html', data=data, zipcode=zipcode)
