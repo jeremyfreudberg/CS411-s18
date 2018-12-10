@@ -26,6 +26,10 @@ def weather():
     if username is None:
         return flask.redirect('/')
 
+    msg = None
+    if flask.request.args.get('error', None):
+        msg = "<font color=red>Can't save recipe to favorites. Please check a recipe you want to add it to your favorites.</font><br />"
+
     zipcode = flask.request.form.get('zipcode')
     current_recipe = api.Recipe_from_input(flask.request.form.get("recipe"))
     current_weather = api.get_weather_pretty(zipcode)
@@ -57,7 +61,7 @@ def weather():
             current_recipe = api.Recipe_from_input(api.grab_temp_recipe(temperature))
 
     if zipcode:
-        return flask.render_template('result.html', weather=current_weather, zipcode=zipcode, recipe=current_recipe)
+        return flask.render_template('result.html', msg=msg, weather=current_weather, zipcode=zipcode, recipe=current_recipe)
     else:
         # The user entered an invalid ZIP, and never previously entered a valid ZIP during a prior session
         return flask.redirect('/home?error=1')
@@ -96,7 +100,9 @@ def add_favorite_recipes():
     if data:
         for name, url in data.items():
             api.update_recipe(username, name, url)
-    return flask.redirect('/viewfavorites')
+        return flask.redirect('/viewfavorites')
+    else:
+        return flask.redirect('/weather?error=1')
 
 @app.route('/viewfavorites', methods=['GET'])
 def show_favorites():

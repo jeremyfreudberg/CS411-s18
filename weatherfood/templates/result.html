@@ -13,7 +13,7 @@ function newPopup(url) {
 
 <b><font size=6.5>Check off your favorite recipes, if any:</font></b>
 <br />
-
+{% if msg %}{{ msg|safe }}{% endif %}
 <form action="/process_favorites" method=post>
     {% for key, value in recipe.items() %}
         <a href="JavaScript:newPopup('{{value}}')"><b>{{ key }}</b></a>
