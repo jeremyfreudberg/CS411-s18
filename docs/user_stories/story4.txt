@@ -1,0 +1,8 @@
+As an authenticated user, and after having performed the flow mentioned in
+Stories 2 and 3, I will be able to save my recipes for later. I will do so by
+clicking checkboxes next to the recipe names and then clicking a button which
+indicates my desire to save them (persist them somewhere). I may receive an
+informational message if I have attempted to save duplicate recipes. If all was
+successful, then I will remain on the same page. If all was not successful (not
+user error, but an error in the application), then I will encounter an error
+but (most likely) be able to have the application retry.

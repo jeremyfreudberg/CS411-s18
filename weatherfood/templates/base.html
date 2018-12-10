@@ -1,0 +1,9 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Weather and Food{% endblock %}
+
+{% block content %}
+{% if not hide_logout %}<h6 ><a href="/logout">Logout</a></h6>{% endif %}
+<h1 align = "center">Weather and Food</h1>
+{% block page_content %}{% endblock %}
+{% endblock %}

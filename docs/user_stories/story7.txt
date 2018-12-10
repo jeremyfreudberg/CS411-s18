@@ -1,0 +1,8 @@
+As an authenticated user, and after having gone through the flow mentioned in
+Stories 2, 3, and 5, I will be presented with a screen which offers details
+about food delivery services that will use my location (zip code) and fetch all
+the food vendors that available for delivery. If all was successful, I will see
+this list and be able to click through to further information about my desired
+food source. If not all was successful, (not user error, but an error in the
+application), then I will encounter an error but (most likely) be able to have
+the application retry.

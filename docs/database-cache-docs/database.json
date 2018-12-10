@@ -1,0 +1,20 @@
+[
+    {
+        "Username_1" : {
+            "Fav_Recipes" : [ "url_for_toast", "url_for_tacos"],
+            "Temperature" : "70",
+            "Conditions" : "Cloudy, with a 20% chance of rain",
+            "Zipcode" : "02215",
+            "Fav_Restaurants" : ["McDonalds", "Wendys"]
+        }
+    },
+    {
+        "Username_2" : {
+            "Fav_Recipes" : [ "url_for_apple_pie", "url_for_cupcake"],
+            "Temperature" : "84",
+            "Conditions" : "Sunny",
+            "Zipcode" : "02215",
+            "Fav_Restaurants" : ["Chipotle", "NudPub"]
+        }
+    }
+]

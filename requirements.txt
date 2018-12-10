@@ -1,0 +1,7 @@
+Flask
+Flask-Bootstrap
+requests
+boto3
+botocore
+Flask-OAuth2-Login
+requests

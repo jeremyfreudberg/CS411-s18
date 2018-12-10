@@ -1,0 +1,8 @@
+As an unauthenticated user, I will first be presented a screen to login with my
+Google account. The normal process of linking a Google account to a third-party
+application will occur, and then I will be redirected to the application. I
+will then be asked to confirm my first and last name, if this my first time
+using the application. If the login was successful, I will be redirected to the
+application’s home page from which the rest of the application’s functionality
+begins. If the login was not successful, I will see an error and be able to
+attempt login again.

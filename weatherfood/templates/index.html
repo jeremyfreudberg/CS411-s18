@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+{% if msg %}{{ msg|safe }}{% endif %}
+<form action="/weather" method=post align="center">
+    <label for="zipcode">Zipcode: </label>
+    {% if zipcode %}
+    <input id="zipcode" name="zipcode" type="text" autocomplete=off value="{{zipcode}}" required />
+    {% else %}
+    <input id="zipcode" name="zipcode" type="text" autocomplete=off value="" required />
+    {% endif %}
+    <input id="submit" name="submit" type="submit" value="Submit" class="btn-sm btn-primary" />
+</form>
+
+{% endblock %}

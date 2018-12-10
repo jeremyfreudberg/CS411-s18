@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div align ="center">
+<b><font size=6.5>Nearby choices</font></b>
+<br />
+
+<table border="1">
+<tr><td>Name</td><td>Rating</td><td>Category</td><td>Has delivery?</td></tr>
+{% for b in data %}
+<tr>
+<td><a href="{{b['url']}}" target="_blank">{{ b['name'] }}</a></td>
+<td>{{ b['rating'] }}</td>
+<td>
+    {% set comma = joiner("/") %}
+    {% for c in b['categories'] %}
+      {{ comma() }}
+      {{ c['title'] }}
+    {% endfor %}
+</td>
+<td>
+    {% if  'delivery' in b['transactions'] %}
+    yes
+    {% else %}
+    no
+    {% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+
+<br /><br />
+<a href="/weather" class="btn btn-warning">Return to Weather</a>
+</div>
+{% endblock %}

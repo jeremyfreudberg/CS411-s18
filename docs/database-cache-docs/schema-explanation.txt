@@ -1,0 +1,8 @@
+-The usernames are going to be the keys for all of the objects in the database. 
+-The nested values of Favorite Recipes, Temperature, Conditions, Zipcode, Favorite Restaurants will
+be the values to those username keys.
+-For the values of Zipcode and Temperature, the database is expecting numeric values for 
+that. 
+-For the values of Favorite Recipes, Favorite Restaurants and Conditions, the database is expecting
+strings.
+-The fields that are required are usernames, zipcode, temperature, and conditions.

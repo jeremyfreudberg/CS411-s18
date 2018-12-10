@@ -1,0 +1,34 @@
+Backend
+-------
+We are using Python with the Flask web framework as the backend of our
+application. used python flask as one of our technology stack. We considered
+NodeJS as an option, but since most of our team was familiar with Python, we
+decided it would be best to stick with a language that we know best, and also
+to avoid having to deal with the unnecessarily asynchronous aspects of NodeJS.
+We chose the the Flask web framework specifically, as there are many extensions
+to the framework that make working with OAuth and working with a database
+simple. Also, some team members greatly appreciate that Flask is not
+batteries-included, unlike Django, which is much more prescriptive. One more
+reason to choose Flask, albeit not unique to Flask, is that Jinja-style
+templating languages are by far the easiest to use, when compared with
+templating languages like Pug.
+
+
+Frontend
+--------
+We don’t intend to use a bulky front-end framework like React or Angular;
+for this project simply plain HTML prettified by the Bootstrap library will
+suffice. We prefer functionality over complication, and don’t need any
+particular fanciness offered by more complicated frameworks.
+
+
+Database
+--------
+We are tentatively planning to use Amazon DynamoDB for our database. DynamoDB
+is a NoSQL database with good performance, and well-integrated into Amazon AWS
+(there’s also a local version for hacking on). DynamoDB is fast– and since
+we are working at such a small scale, we believe that there’s more
+performance gain from a DB which is simply fast, than from any schema
+optimizations we can make on a traditional relational DB. Also, some team
+members have heard lots of hype about DynamoDB, yet never used it before, so
+they would like to evaluate it.

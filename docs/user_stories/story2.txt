@@ -1,0 +1,9 @@
+As an authenticated user, I will, before any other functionality is available
+to me, provide the application with my zip code. This will be done from the
+home screen. If I have never provided my zip code before, then the field to
+enter my zip code in will be blank, but otherwise, my most-recently entered zip
+code will be displayed, with the ability to modify it. From here, I will click
+through to proceed to further functionality. If the zip code is valid (meaning
+that a weather API can return data based on it), then the application will
+proceed. If the zip code is invalid, then I will be able to enter a different
+one.

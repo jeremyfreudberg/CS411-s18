@@ -1,0 +1,5 @@
+As an authenticated user, I will be able to, from any stage in the application,
+be able to click over to my list of saved recipes. If successful, this click
+will take me to a new page. If not successful, (not user error, but an error in
+the application), then I will encounter an error but (most likely) be able to
+have the application retry.
