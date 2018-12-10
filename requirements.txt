@@ -5,7 +5,4 @@ boto3
 botocore
 Flask-OAuth2-Login
 requests
-<<<<<<< HEAD
-=======
 python-dateutil
->>>>>>> b9e130676ce1066a751198a7512b627582307b5c

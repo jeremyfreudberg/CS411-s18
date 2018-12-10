@@ -11,14 +11,11 @@ dynamo.create_table(TableName='CS411',
                     AttributeDefinitions=[{'AttributeName': 'Username', 'AttributeType': 'S'}],
                     ProvisionedThroughput={'ReadCapacityUnits': 10, 'WriteCapacityUnits': 10})
 
-<<<<<<< HEAD
-=======
 dynamo.create_table(TableName='YelpCache',
                     KeySchema=[{'AttributeName': 'Zipcode', 'KeyType': 'HASH'}],
                     AttributeDefinitions=[{'AttributeName': 'Zipcode', 'AttributeType': 'S'}],
                     ProvisionedThroughput={'ReadCapacityUnits': 10, 'WriteCapacityUnits': 10})
 
->>>>>>> b9e130676ce1066a751198a7512b627582307b5c
 dynamo.create_table(TableName='WeatherRecipes',
                     KeySchema=[{'AttributeName': 'Temperature', 'KeyType': 'HASH'}],
                     AttributeDefinitions=[{'AttributeName': 'Temperature', 'AttributeType': 'S'}],
