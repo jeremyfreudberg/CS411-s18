@@ -30,6 +30,9 @@ def weather():
     if current_weather == "Unavailable":
         current_weather = api.retreive_user(username)["Weather"]
 
+        if current_weather is None:
+            return flask.redirect('/home?error=1')
+
         # Grabbing the temperature from the current_weather string
         for val in current_weather.split(): 
             if val.isdigit():
