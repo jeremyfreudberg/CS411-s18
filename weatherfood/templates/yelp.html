@@ -10,7 +10,13 @@
 {% for b in data %}
 <tr>
 <td><a href="{{b['url']}}" target="_blank">{{ b['name'] }}</a></td>
-<td>{{ b['rating'] }}</td>
+<td>
+    {% if b['rating'] >= 4.5 %}
+        <font color="blue">{{ b['rating'] }}</font>
+    {% else %}
+        {{ b['rating'] }}
+    {% endif %}
+</td>
 <td>
     {% set comma = joiner("/") %}
     {% for c in b['categories'] %}
@@ -20,7 +26,7 @@
 </td>
 <td>
     {% if  'delivery' in b['transactions'] %}
-    yes
+    <font color="green"><b>yes</b></font>
     {% else %}
     no
     {% endif %}
