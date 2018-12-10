@@ -34,6 +34,8 @@ def weather():
     current_recipe = api.Recipe_from_input(flask.request.form.get("recipe"))
     current_weather = api.get_weather_pretty(zipcode)
     temperature = 0
+
+    # Handling redirection and entry cases to this route ('/weather')
     if current_weather == "Unavailable":
         current_weather = api.retreive_user(username)["Weather"]
 
@@ -94,15 +96,19 @@ def add_favorite_recipes():
         return flask.redirect('/')
     data = flask.request.form.to_dict()
     data.pop('submit')
+
+    # Case if user didnt check boxe a recipe(s) to favorite, show error
+    if len(data) == 0:
+        return flask.redirect('/weather?error=1')
+
+    # Handling favoriting duplicate recipes
     existing_favorites = api.fetch_all_favorites(username)
     for fav in existing_favorites:
         data.pop(fav, None)
     if data:
         for name, url in data.items():
             api.update_recipe(username, name, url)
-        return flask.redirect('/viewfavorites')
-    else:
-        return flask.redirect('/weather?error=1')
+    return flask.redirect('/viewfavorites')
 
 @app.route('/viewfavorites', methods=['GET'])
 def show_favorites():

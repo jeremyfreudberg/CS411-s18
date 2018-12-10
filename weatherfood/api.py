@@ -13,6 +13,8 @@ BASE_URL = "http://api.openweathermap.org/data/2.5/weather?zip={0},us&appid={1}"
 RESULT_BASE = "{0}, and {1} degrees Fahrenheit"
 
 USE_LOCAL_DYNAMO = bool(app.config['USE_LOCAL_DYNAMO'])
+
+#Function that sets the dynamo resource to either a local instance or aws instance
 def _load_dynamo_resource():
     if not USE_LOCAL_DYNAMO:
         return boto3.resource('dynamodb')
@@ -23,10 +25,12 @@ def _load_dynamo_resource():
                               aws_access_key_id='dummy',
                               aws_secret_access_key='dummy')
 
+#Function that converts temperature in the form of Kelvin to Fahrenheit
 def _kelvin_to_fahrenheit(k):
     f = (k * 1.8) - 459.67
     return int(f)
 
+#Function that makes an API request to grab weather data corresponding to a zipcode
 def get_weather_pretty(zipcode):
     raw = requests.post(BASE_URL.format(zipcode, API_KEY)).json()
     try:
@@ -51,9 +55,6 @@ def Recipe_from_input(recipe):
 	for result in content.json()['results']:		
 		#dicto.update( {temp : result['href']} )
 		dicto.update( {result['title'] :result['href']} )
-
-	#return content.json()
-	#print(dicto)
 	return dicto
 
 #Function that creates a new user and puts it in our DynamoDB database
@@ -186,6 +187,7 @@ def grab_temp_recipe(Temperature):
 	except IndexError:
 		return recipes[0]
 
+#Function that fetches all of a user's favorite recipes
 def fetch_all_favorites(Username):
     dynamo = _load_dynamo_resource()
     t = dynamo.Table('CS411')
@@ -196,6 +198,7 @@ def fetch_all_favorites(Username):
                )
     return [recipe.keys()[0] for recipe in response['Item']['Fav_Recipes']]
 
+#Function that fetches yelp data according to a zipcode
 def retrieve_yelp_data(zipcode):
     dynamo = _load_dynamo_resource()
     t = dynamo.Table('YelpCache')
@@ -205,6 +208,7 @@ def retrieve_yelp_data(zipcode):
     except KeyError:
         return None
 
+#Function that updates Yelp data with new values for zipcode, data, and the timestamp
 def save_yelp_data(Zipcode, YelpData, Updated):
     dynamo = _load_dynamo_resource()
     t = dynamo.Table('YelpCache')
