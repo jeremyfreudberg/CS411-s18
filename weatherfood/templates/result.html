@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-
-The weather in {{ zipcode }} is: <b>{{ weather }}</b>
+<div align=center>
+    The weather in {{ zipcode }} is: <b>{{ weather }}</b>
+</div>
 <br /><br />
 
 <script type="text/javascript">
@@ -11,10 +12,15 @@ function newPopup(url) {
 }
 </script>
 
-<b><font size=6.5>Check off your favorite recipes, if any:</font></b>
+<div align=center>
+    <b><font size=6.5>Check off your favorite recipes, if any:</font></b>
+</div>
+
 <br />
-{% if msg %}{{ msg|safe }}{% endif %}
-<form action="/process_favorites" method=post>
+<div align=center>
+    {% if msg %}{{ msg|safe }}{% endif %}
+</div>
+<form align=center action="/process_favorites" method=post>
     {% for key, value in recipe.items() %}
         <a href="JavaScript:newPopup('{{value}}')"><b>{{ key }}</b></a>
         <input type="checkbox" name="{{key}}"  value="{{value}}"><br />
@@ -25,7 +31,7 @@ function newPopup(url) {
 
 <br /><br />
 
-<form action="/weather" method=post>
+<form align=center action="/weather" method=post>
     <label for="recipe">Enter a Custom Recipe: </label>
     <input id="recipe" name="recipe" type="text" autocomplete=off value="" />
     <input id="submit" name="submit" type="submit" value="Submit" class="btn-sm btn-primary" />
@@ -33,13 +39,13 @@ function newPopup(url) {
 
 <br /><br />
 
-<form action="/yelp" method=post>
-<input id="submit" name="submit" type="submit" value="I hate these suggestions!" class="btn-lg btn-info" />
+<form align=center action="/yelp" method=post>
+    <input id="submit" name="submit" type="submit" value="I hate these suggestions!" class="btn-lg btn-danger" />
 </form>
 
 <br /><br />
 
-<a href="/home" class="btn btn-warning">Go again</a>
-<a href="/viewfavorites" class="btn btn-info">View Favorite Recipes</a>
+<a href="/home" class="btn btn-warning" style="margin:20px auto; text-align:center; display:block; width:200px;" >Go again</a>
+<a href="/viewfavorites" class="btn btn-info" style="margin:20px auto; text-align:center; display:block; width:200px;" >View Favorite Recipes</a>
 
 {% endblock %}

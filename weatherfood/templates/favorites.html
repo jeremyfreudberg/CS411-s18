@@ -2,12 +2,14 @@
 
 {% block page_content %}
 
-<b><font size=6.5>Favorites:</font></b>
+<div align=center>
+    <b><font size=6.5>Favorites:</font></b>
+</div>
 <br /><br />
 
 {% for item in favorites %}
     {% for key, value in item.items() %}
-        <form action="/del_fav" method=post>
+        <form align=center action="/del_fav" method=post>
         <a href="{{ value }}" target="_blank"><b>{{ key }}</b></a>
             <button class="btn-sm btn-danger" type="submit" name="delete" value="{{ key }}">Delete</button>
         </form>
@@ -16,6 +18,8 @@
 {% endfor %}
 <br />
 
-<a href="/weather" class="btn btn-warning">Return to Weather</a>
+<div align=center>
+    <a href="/weather" class="btn btn-warning">Return to Weather</a>
+</div>
 
 {% endblock %}
