@@ -6,6 +6,7 @@
     {% if msg %}{{ msg|safe }}{% endif %}
 </div>
 <form align=center action="/weather" method=post>
+    <input type="hidden" id="from_home" name="from_home" value="true">
     <label for="zipcode">Zipcode: </label>
     {% if zipcode %}
     <input id="zipcode" name="zipcode" type="text" autocomplete=off value="{{zipcode}}" required />

@@ -30,9 +30,17 @@ def weather():
     if flask.request.args.get('error', None):
         msg = "<font color=red>Can't save recipe to favorites. Please check a recipe you want to add it to your favorites.</font><br />"
 
+    # Checking if user navigated from home route
+    from_home = flask.request.form.get('from_home', None)
+
     zipcode = flask.request.form.get('zipcode')
     current_recipe = api.Recipe_from_input(flask.request.form.get("recipe"))
     current_weather = api.get_weather_pretty(zipcode)
+
+    # The user entered an invalid ZIP in the home route
+    if current_weather == "Unavailable" and from_home:
+        return flask.redirect('/home?error=1')        
+
     temperature = 0
 
     # Handling redirection and entry cases to this route ('/weather')
