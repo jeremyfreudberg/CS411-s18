@@ -6,8 +6,10 @@ dynamo = boto3.resource('dynamodb',
                         aws_access_key_id='dummy',
                         aws_secret_access_key='dummy')
 
-t = dynamo.Table('CS411')
-t.delete()
-
-t = dynamo.Table('WeatherRecipes')
-t.delete()
+tables = ['CS411', 'WeatherRecipes', 'YelpCache']
+for table_name in tables:
+    t = dynamo.Table(table_name)
+    try:
+        t.delete()
+    except:
+        pass
