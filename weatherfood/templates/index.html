@@ -3,7 +3,7 @@
 {% block page_content %}
 
 {% if msg %}{{ msg|safe }}{% endif %}
-<form action="/weather" method=post>
+<form action="/weather" method=post align="center">
     <label for="zipcode">Zipcode: </label>
     {% if zipcode %}
     <input id="zipcode" name="zipcode" type="text" autocomplete=off value="{{zipcode}}" required />

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-
-<b><font size=6.5>Nearby choices for {{zipcode}}</font></b>
+<div align ="center">
+<b><font size=6.5>Nearby choices</font></b>
 <br />
 
 <table border="1">
@@ -10,13 +10,7 @@
 {% for b in data %}
 <tr>
 <td><a href="{{b['url']}}" target="_blank">{{ b['name'] }}</a></td>
-<td>
-    {% if b['rating'] >= 4.5 %}
-        <font color="blue">{{ b['rating'] }}</font>
-    {% else %}
-        {{ b['rating'] }}
-    {% endif %}
-</td>
+<td>{{ b['rating'] }}</td>
 <td>
     {% set comma = joiner("/") %}
     {% for c in b['categories'] %}
@@ -26,7 +20,7 @@
 </td>
 <td>
     {% if  'delivery' in b['transactions'] %}
-    <font color="green"><b>yes</b></font>
+    yes
     {% else %}
     no
     {% endif %}
@@ -37,5 +31,5 @@
 
 <br /><br />
 <a href="/weather" class="btn btn-warning">Return to Weather</a>
-
+</div>
 {% endblock %}
